@@ -10,12 +10,8 @@ live database.
 |---|---|---|
 | `FactAirticket_v1_preprocessed.csv` | Phase 1 (preprocessing) | The 600-row fact table after all preprocessing fixes were applied and verified (see `queries/06_verification_all_requirements.sql`). All requirements confirmed passing at time of export. |
 
-## How these are generated
+| `fact_table_raw.csv` | The Fact table raw data which contains the raw data before preprocessing to match the other dimensions tables. |
 
-Each snapshot is exported directly from SSMS: run a `SELECT * FROM <table> ORDER BY <key>;`,
-right-click the results grid → **Save Results As...** → save as `.csv`. This keeps the exported
-file as an exact, verifiable copy of what's actually in the database at that point in time, rather
-than a manually edited file.
 
 ## Why keep these at all, if the real data lives in SQL Server?
 
