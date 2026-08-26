@@ -43,7 +43,7 @@ Database name: `FlightDW`
 
 ## Environment
 
-- Microsoft SQL Server 2014+ / SSMS for the relational database
+- Microsoft SQL Server 2025 / SSMS for the relational database
 - SQL Server Data Tools (SSDT) + SSAS for the OLAP cube (Phase 4 onward)
 
 ## AUTHOR
