@@ -12,7 +12,7 @@ live database.
 | `FactAirticket_v2_star_schema.csv` | Phase 2 (star schema formalization) | Same 600 rows, now including the new `FlightFactID` surrogate primary key and direct `AirlinesID` column, with all 15 previously-orphaned `PassengerID` values corrected. Exported after all 11 foreign key constraints were verified in place. |
 
 
-## Why keep these at all, if the real data lives in SQL Server?
+## Why do I keep these at all, if the real data lives in SQL Server?
 
 - Provides a permanent, timestamped record of what the data looked like at each phase, for the
   report and for grading evidence.
