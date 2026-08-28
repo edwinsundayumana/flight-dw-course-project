@@ -8,9 +8,8 @@ live database.
 
 | File | Exported after | Description |
 |---|---|---|
-| `FactAirticket_v1_preprocessed.csv` | Phase 1 (preprocessing) | The 600-row fact table after all preprocessing fixes were applied and verified (see `queries/06_verification_all_requirements.sql`). All requirements confirmed passing at time of export. |
-
-| `fact_table_raw.csv` | The Fact table raw data which contains the raw data before preprocessing to match the other dimensions tables. |
+| `FactAirticket_v1_preprocessed.csv` | Phase 1 (preprocessing) | The 600-row fact table after all preprocessing fixes were applied and verified (see `queries/06_verification_all_requirements.sql`). All Phase 1 requirements confirmed passing at time of export. |
+| `FactAirticket_v2_star_schema.csv` | Phase 2 (star schema formalization) | Same 600 rows, now including the new `FlightFactID` surrogate primary key and direct `AirlinesID` column, with all 15 previously-orphaned `PassengerID` values corrected. Exported after all 11 foreign key constraints were verified in place. |
 
 
 ## Why keep these at all, if the real data lives in SQL Server?
