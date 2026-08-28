@@ -14,7 +14,16 @@ SQL scripts used to build and preprocess the `FlightDW` data warehouse, in the o
 | `05_reassign_tickets_for_airline_diversity.sql` | Reassigns `TicketID` across all fact rows so that ≥10 distinct airlines are represented (achieved: 12). |
 | `06_verification_all_requirements.sql` | Final consolidated check confirming every Phase 1 requirement is satisfied. |
 
-## Requirements checklist (from assignment spec)
+## Phase 2 — Star Schema Formalization
+
+| Script | Purpose |
+|---|---|
+| `07_add_flightfactid_primary_key.sql` | Adds `FlightFactID`, a proper surrogate primary key (the fact table previously had none). |
+| `08_add_direct_airlinesid_link.sql` | Adds a direct `AirlinesID` column to the fact table, closing a two-hop join (previously required `FactAirticket → DimTicket → DimAirlines`). |
+| `09_fix_orphaned_passenger_ids.sql` | Fixes 15 rows referencing `PassengerID` values that don't exist in `DimPassenger` — a pre-existing data issue in the original source file, only discovered once a real foreign key constraint was attempted. |
+| `10_add_remaining_foreign_keys.sql` | Declares the remaining 9 foreign key relationships (3 airport roles, both dates, ticket, plane, cabin, price range), completing all 11 formal relationships in the star schema. |
+
+## Requirements checklist 
 
 - [x] ≥20 distinct departure airports
 - [x] ≥20 distinct landing airports (and departure ≠ landing per row)
@@ -24,8 +33,12 @@ SQL scripts used to build and preprocess the `FlightDW` data warehouse, in the o
 - [x] Flight dates span ~6 months
 - [x] `PlaneID` never blank, not all identical
 - [x] `CabinID` never blank, not all identical (already satisfied by source data)
+- [x] Fact table has a formal primary key
+- [x] All 11 dimension relationships enforced as real foreign key constraints
 
 ## Notes / known simplifications
 
 - 11 of the 18 airlines in `DimAirlines` have zero real flights in the 568,917-row `DimTicket` table (a limitation of the source data, not an error in our process). We manufactured a small number of synthetic ticket rows for 5 of them to clear the ≥10 airline diversity requirement — see script `04`.
 - Ticket `departureTime`/`arrivalTime` values are not reconciled against the fact table's `DepartureDateID`/`ArrivalDateID` — these are independent dimensions in the current design. Documented as a known simplification.
+- `DimPassenger`'s ID sequence has 944 gaps (1–62988 range, only 62044 rows) — a pre-existing characteristic of the source file. 15 fact rows happened to reference gap values; fixed in script `09`.
+- `DimPlane`'s ID sequence has 1 gap (missing ID 4) — did not cause any issues since our `PlaneID` assignment logic always draws from real, existing `DimPlane` IDs.
