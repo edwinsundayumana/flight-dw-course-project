@@ -20,7 +20,7 @@ Server / SSAS.
 ```
 ├── queries/     SQL scripts, in run order, with their own README
 ├── csv/         Exported snapshots of tables at key milestones, with their own README
-├── screenshots/   Visual evidence captured throughout the project — diagrams, query results, SSMS/SSAS screen
+├── screenshots/ Visual evidence captured throughout the project — diagrams, query results, SSMS/SSAS screen
 └── README.md    This file
 ```
 
