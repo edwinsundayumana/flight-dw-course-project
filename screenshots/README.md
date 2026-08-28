@@ -13,7 +13,7 @@ phase the screenshot belongs to, so files sort in the same order the project was
 
 | File | Phase | Description |
 |---|---|---|
-| `star_schema_diagram.png` | 2 — Star Schema Design | SSMS Database Diagram showing `FactAirticket` at the center with all 9 dimension tables connected via their formally-declared foreign keys, including the three-way role-playing relationship into `DimAirport` (Departure / Transit / Landing). Generated after all 11 foreign key constraints were added and verified. |
+| `02_star_schema_diagram.png` | 2 — Star Schema Design | SSMS Database Diagram showing `FactAirticket` at the center with all 9 dimension tables connected via their formally-declared foreign keys, including the three-way role-playing relationship into `DimAirport` (Departure / Transit / Landing). Generated after all 11 foreign key constraints were added and verified. |
 
 More rows will be added here as later phases produce their own evidence (e.g. Phase 1
 verification query results, Phase 4 SSAS cube structure, Phase 5 MDX query results).
