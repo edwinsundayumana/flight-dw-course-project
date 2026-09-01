@@ -1,0 +1,18 @@
+# Visual Studio / SSAS project artifacts - not part of the actual project,
+# regenerated automatically every time the project is opened or built.
+
+.vs/
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.dbmdl
+*.jfm
+*.deploytargets
+*.deploymentoptions
+
+# Analysis Services build/deploy output
+cube/**/bin/
+cube/**/obj/

@@ -11,17 +11,19 @@ Server / SSAS.
 | 1 | Preprocess `FactAirticket` to satisfy dataset requirements (airport diversity, transit stopovers, airline diversity, plane assignment, passenger/date spread) | ✅ Complete |
 | 2 | Star schema design — formalize dimension/fact relationships and hierarchies | ✅ Complete |
 | 3 | Build the data warehouse in SQL Server (tables, load, relationships) | ✅ Complete (achieved as part of Phases 1–2) |
-| 4 | Build the OLAP cube in SSAS | ⬜ Not started |
+| 4 | Build the OLAP cube in SSAS | ✅ Complete |
 | 5 | Write 21+ MDX queries (7+ OLAP operation types × 3 examples each) | ⬜ Not started |
 | 6 | Final report | ⬜ Not started |
+
 
 ## Repository structure
 
 ```
-├── queries/     SQL scripts, in run order, with their own README
-├── csv/         Exported snapshots of tables at key milestones, with their own README
-├── screenshots/ Visual evidence captured throughout the project — diagrams, query results, SSMS/SSAS screen
-└── README.md    This file
+├── queries/       SQL scripts, in run order, with their own README
+├── csv/           Exported snapshots of tables at key milestones, with their own README
+├── cube/          Visual Studio Analysis Services (SSAS) project, with its own README
+├── screenshots/   Visual evidence (diagrams, etc.), with its own README
+└── README.md      This file
 ```
 
 More folders (e.g. `mdx/`, `report/`, `screenshots/`) will be added as later phases begin.
@@ -58,10 +60,25 @@ DimPassenger ---      FactAirticket      --- DimAirlines
 Every relationship above is enforced with a real SQL Server foreign key constraint (11 total) —
 not just correct by coincidence.
 
+## OLAP cube overview
+
+Server: `EDWIN\SSAS_EVAL` (SQL Server Analysis Services, Evaluation edition, Multidimensional
+mode — see `cube/README.md` for why this is a separate named instance from the main Database
+Engine, and the story behind why)
+
+Cube: `FlightAirticketCube`
+- Measures: `Mileage`, `Price`, `Rate`, `Fact Airticket Count`
+- 11 dimensions, matching the star schema's 11 foreign key relationships exactly
+
+
 ## Environment
 
-- Microsoft SQL Server 2025 / SSMS for the relational database
-- SQL Server Data Tools (SSDT) + SSAS for the OLAP cube (Phase 4 onward)
+- Microsoft SQL Server 2025 / SSMS for the relational database (instance: `EDWIN`)
+- Visual Studio 2026 + SQL Server Data Tools + Microsoft Analysis Services Projects extension,
+  for building the OLAP cube
+- SQL Server Analysis Services, Evaluation edition (instance: `EDWIN\SSAS_EVAL`), for hosting
+  and processing the cube
+
 
 ## AUTHOR
 EDWIN SUNDAY UMANA

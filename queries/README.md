@@ -23,7 +23,13 @@ SQL scripts used to build and preprocess the `FlightDW` data warehouse, in the o
 | `09_fix_orphaned_passenger_ids.sql` | Fixes 15 rows referencing `PassengerID` values that don't exist in `DimPassenger` — a pre-existing data issue in the original source file, only discovered once a real foreign key constraint was attempted. |
 | `10_add_remaining_foreign_keys.sql` | Declares the remaining 9 foreign key relationships (3 airport roles, both dates, ticket, plane, cabin, price range), completing all 11 formal relationships in the star schema. |
 
-## Requirements checklist 
+## Phase 4 — OLAP Cube (SSAS)
+
+| Script | Purpose |
+|---|---|
+| `11_grant_ssas_service_account_access.sql` | Grants the Analysis Services service account read access to `FlightDW`, fixing a cube deployment failure caused by an unsupported impersonation mode during processing. See `cube/README.md` for full context. |
+
+## Requirements checklist (from assignment spec)
 
 - [x] ≥20 distinct departure airports
 - [x] ≥20 distinct landing airports (and departure ≠ landing per row)
@@ -35,6 +41,7 @@ SQL scripts used to build and preprocess the `FlightDW` data warehouse, in the o
 - [x] `CabinID` never blank, not all identical (already satisfied by source data)
 - [x] Fact table has a formal primary key
 - [x] All 11 dimension relationships enforced as real foreign key constraints
+- [x] OLAP cube built, deployed, and processed successfully
 
 ## Notes / known simplifications
 
@@ -42,3 +49,4 @@ SQL scripts used to build and preprocess the `FlightDW` data warehouse, in the o
 - Ticket `departureTime`/`arrivalTime` values are not reconciled against the fact table's `DepartureDateID`/`ArrivalDateID` — these are independent dimensions in the current design. Documented as a known simplification.
 - `DimPassenger`'s ID sequence has 944 gaps (1–62988 range, only 62044 rows) — a pre-existing characteristic of the source file. 15 fact rows happened to reference gap values; fixed in script `09`.
 - `DimPlane`'s ID sequence has 1 gap (missing ID 4) — did not cause any issues since our `PlaneID` assignment logic always draws from real, existing `DimPlane` IDs.
+- The SSAS instance used for the cube (`EDWIN\SSAS_EVAL`) is a separate named instance from the main Database Engine (`EDWIN`), installed specifically to work around a Microsoft edition bug — see `cube/README.md` for details.
