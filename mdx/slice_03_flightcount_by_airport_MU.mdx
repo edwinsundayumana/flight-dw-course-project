@@ -12,6 +12,6 @@
 
 SELECT
     [Measures].[Fact Airticket Count] ON COLUMNS,
-    [Departure Airport].[Ariport].MEMBERS ON ROWS
+    [Departure Ariport].[Ariport].MEMBERS ON ROWS
 FROM [FlightAirticketCube]
 WHERE ( [Dim Airlines].[Airlines Code].&[MU] )
