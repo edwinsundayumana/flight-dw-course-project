@@ -31,6 +31,11 @@ holding that query's exported result grid.
 | 13 | Rank | `rank_01_revenue_by_airline.mdx` | Airlines ranked by total revenue, highest to lowest (12 real airlines, corrected to exclude the "All" aggregate and zero-revenue airlines). | ✅ Done |
 | 14 | Rank | `rank_02_flightcount_by_airport.mdx` | Departure airports ranked by flight count. | ✅ Done |
 | 15 | Rank | `rank_03_avgrate_by_airline_ascending.mdx` | Airlines ranked by average discount rate, lowest to highest (ascending), using `NonEmpty` to exclude airlines with no rate data. | ✅ Done |
+| 16 | Moving Average | `movingavg_01_price_3month.mdx` | 3-month moving average of revenue across the 6 active months. Hand-verified against Drill Down #1's monthly figures. | ✅ Done |
+| 17 | Moving Average | `movingavg_02_flightcount_3month.mdx` | 3-month moving average of flight count. Reveals revenue and volume trends diverge in July, suggesting a change in average value per flight, not just activity level. | ✅ Done |
+| 18 | Moving Average | `movingavg_03_avgrate_2month.mdx` | 2-month moving average of average discount rate — a shorter, more responsive window than examples 1-2. | ✅ Done |
+
+**One operation left: Top N.**
 
 
 More rows will be added as each remaining operation (Roll Up, Rank, Moving Average, Top N) is
@@ -78,6 +83,9 @@ completed.
   with `NonEmpty(set, measure)` before ordering. This affects `BASC` rankings more visibly than
   `BDESC` ones (where nulls simply trail at the bottom, less obviously wrong at a glance) — worth
   checking both ends of any ranked result, not just the top.
-- `.MEMBERS` on a hierarchy always includes the automatic `All` aggregate member. Using
-  `.[All].Children` instead returns only the real, individual members, excluding the aggregate
-  without needing a separate `EXCEPT(...)` filter.
+- `.MEMBERS` on a hierarchy always includes the automatic `All` aggregate member; `.[All].Children`
+  returns only the real, individual members, excluding the aggregate without a separate filter.
+- The dataset's flight activity only spans 6 scattered months (Jan, Feb, Mar, May, Jun, Jul —
+  April and August-December are empty). Moving average queries explicitly reference these 6
+  months by name, treating them as a chronological sequence, rather than computing across all 12
+  calendar months, which would let empty months silently distort real averages.
