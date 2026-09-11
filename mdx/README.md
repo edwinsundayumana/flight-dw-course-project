@@ -5,7 +5,7 @@
 
 ## Naming convention
 
-`<operation>_<number>_<short description>.mdx`, with a matching `<same name>_result.csv`
+`<operation>_<number>_<short description>.mdx`, with a matching `<same name>_result.txt`
 holding that query's exported result grid.
 
 ## Progress
