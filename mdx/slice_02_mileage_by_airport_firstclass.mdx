@@ -1,0 +1,17 @@
+/*
+    Operation: SLICE
+    Question: What is total mileage flown, broken down by departure
+    airport, for First Class passengers only?
+    Business meaning: Identifies which airports generate the most
+    premium/high-value long-haul traffic.
+
+    This slices the cube by fixing Cabin Class to a single value
+    (F = First), while departure airport is left free to vary
+    across the result rows.
+*/
+
+SELECT
+    [Measures].[Mileage] ON COLUMNS,
+    [Departure Airport].[Ariport].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE ( [Dim Seat].[Cabin Class].&[F] )

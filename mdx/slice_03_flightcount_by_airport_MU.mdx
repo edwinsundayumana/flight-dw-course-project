@@ -1,0 +1,17 @@
+/*
+    Operation: SLICE
+    Question: What is the flight count, broken down by departure
+    airport, for a single specific airline (China Eastern / MU)?
+    Business meaning: Shows one airline's own route network
+    concentration -- where this specific carrier operates most.
+
+    This slices the cube by fixing Airlines Code to a single value
+    (MU = China Eastern), while departure airport is left free to
+    vary across the result rows.
+*/
+
+SELECT
+    [Measures].[Fact Airticket Count] ON COLUMNS,
+    [Departure Airport].[Ariport].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE ( [Dim Airlines].[Airlines Code].&[MU] )

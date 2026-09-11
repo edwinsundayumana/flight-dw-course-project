@@ -1,0 +1,18 @@
+/*
+    Operation: SLICE
+    Question: What was total ticket revenue (Price), broken down by
+    airline, during March 2021?
+    Business meaning: Helps identify which airlines were strongest
+    in a specific period (useful around holidays, seasonal
+    campaigns, promotions, etc.)
+
+    This slices the cube by fixing the Time dimension to a single
+    value (Year 2021, Month 3), while airline is left free to vary
+    across the result rows.
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    [Dim Airlines].[Airlines].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE ( [Departure Date].[Year].&[2021], [Departure Date].[Month].&[3] )
