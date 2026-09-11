@@ -1,0 +1,18 @@
+/*
+    Operation: DRILL DOWN
+    Question: What was the flight count for March 2021, drilled
+    down into individual days?
+    Business meaning: Goes one level deeper than example 1 (Month
+    -> Date), showing exactly which day(s) within a month actually
+    had activity -- useful for spotting concentrated demand (e.g.
+    a single event or holiday driving a whole month's flights).
+
+    Chains two .Children-style navigations: first to the specific
+    Month member (key 3 = March) under Year 2021, then to its
+    Children (the individual dates).
+*/
+
+SELECT
+    [Measures].[Fact Airticket Count] ON COLUMNS,
+    [Departure Date].[Calendar].[Year].&[2021].[3].Children ON ROWS
+FROM [FlightAirticketCube]

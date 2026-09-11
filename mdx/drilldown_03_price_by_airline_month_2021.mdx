@@ -1,0 +1,23 @@
+/*
+    Operation: DRILL DOWN
+    Question: What was total revenue by airline for 2021, drilled
+    down to show each airline's monthly breakdown?
+    Business meaning: A richer, report-style drill down -- combines
+    the Year->Month hierarchy drill with a second dimension
+    (Airline) at the same time, showing not just "the months" but
+    "each airline's performance within each month."
+
+    Introduces the cross-join operator (*), which pairs every
+    member of one set with every member of another (every airline x
+    every month), and NON EMPTY, which suppresses the many
+    airline/month combinations that have no actual data -- without
+    it, the result would include a large number of blank rows.
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    NON EMPTY
+    [Dim Airlines].[Airlines].MEMBERS *
+    [Departure Date].[Calendar].[Year].&[2021].Children
+    ON ROWS
+FROM [FlightAirticketCube]

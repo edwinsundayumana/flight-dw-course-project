@@ -1,0 +1,21 @@
+/*
+    Operation: DRILL DOWN
+    Question: What was total revenue for 2021, broken down into
+    its individual months?
+    Business meaning: The most direct demonstration of drill down --
+    starting from one summary figure (the year) and moving to a
+    more detailed level (its months) within the same hierarchy.
+
+    Uses the Calendar hierarchy (Year -> Month -> Date) built in the
+    cube designer specifically for this kind of navigation, and the
+    .Children function to request exactly the level one step below
+    a given member -- the idiomatic MDX way to express "drill down
+    into this member," rather than requesting a whole level and
+    separately trying to filter it (which caused a "hierarchy
+    already appears in axis" error on the first attempt).
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    [Departure Date].[Calendar].[Year].&[2021].Children ON ROWS
+FROM [FlightAirticketCube]
