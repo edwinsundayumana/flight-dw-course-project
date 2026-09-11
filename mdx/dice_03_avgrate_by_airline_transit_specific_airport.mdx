@@ -1,0 +1,39 @@
+/*
+    Operation: DICE
+    Question: What is the average discount rate, by airline, for
+    flights with a real transit/stopover AND departing from a
+    specific airport (漠河机场)?
+    Business meaning: Isolates a narrow, specific segment (transit
+    flights from one particular airport) to see which airlines
+    offer better/worse average discounts on that specific route
+    pattern.
+
+    This dices the cube on two dimensions simultaneously: a single
+    Departure Airport value, AND the Transit Airport dimension
+    restricted to real stopovers only (excluding the automatic
+    UnknownMember placeholder that represents "no transit airport").
+
+    Also introduces a CALCULATED MEMBER: [Measures].[Average Rate],
+    since the raw Rate measure sums every row's rate (not
+    meaningful on its own); dividing by flight count gives a real
+    average.
+
+    Note: an initial attempt to name the transit-airport exclusion
+    as a separate "WITH SET" and reference it in WHERE triggered a
+    false "circular reference" error from the SSAS engine. Fixed by
+    inlining the EXCEPT(...) expression directly in WHERE instead.
+*/
+
+WITH
+MEMBER [Measures].[Average Rate] AS
+    [Measures].[Rate] / [Measures].[Fact Airticket Count],
+    FORMAT_STRING = "0.00"
+
+SELECT
+    [Measures].[Average Rate] ON COLUMNS,
+    [Dim Airlines].[Airlines].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE (
+    [Departure Airport].[Ariport].[漠河机场],
+    EXCEPT( [Transit Airport].[Ariport].MEMBERS, { [Transit Airport].[Ariport].UnknownMember } )
+)

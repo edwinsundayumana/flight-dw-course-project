@@ -1,0 +1,22 @@
+/*
+    Operation: DICE
+    Question: What was total revenue, by airline, for flights in
+    Q1 2021 (January-March) AND Business class only?
+    Business meaning: Answers a more targeted, multi-condition
+    question than a simple slice -- how did a specific class
+    perform across a full quarter, not just one month or one class
+    alone.
+
+    This dices the cube on two dimensions simultaneously: a RANGE
+    on Time (Month 1 through Month 3, using the ':' range operator)
+    AND a single value on Cabin Class (C = Business).
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    [Dim Airlines].[Airlines].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE (
+    { [Departure Date].[Month].&[1] : [Departure Date].[Month].&[3] },
+    [Dim Seat].[Cabin Class].&[C]
+)

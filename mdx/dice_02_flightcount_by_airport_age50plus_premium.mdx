@@ -1,0 +1,24 @@
+/*
+    Operation: DICE
+    Question: What is the flight count, by departure airport, for
+    passengers aged 51-90 AND flying First or Business class?
+    Business meaning: Targets a specific demographic (older
+    passengers) combined with a premium travel segment -- useful
+    for understanding which airports serve higher-value older
+    travelers.
+
+    This dices the cube on two dimensions simultaneously: a RANGE
+    on Passenger Age (51 through 90) AND a set of two explicit
+    values on Cabin Class (F = First, C = Business), listed
+    together rather than as a range since F and C are not adjacent
+    ordered values.
+*/
+
+SELECT
+    [Measures].[Fact Airticket Count] ON COLUMNS,
+    [Departure Airport].[Ariport].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
+WHERE (
+    { [Dim Passenger].[Passenger Age].&[51] : [Dim Passenger].[Passenger Age].&[90] },
+    { [Dim Seat].[Cabin Class].&[F], [Dim Seat].[Cabin Class].&[C] }
+)
