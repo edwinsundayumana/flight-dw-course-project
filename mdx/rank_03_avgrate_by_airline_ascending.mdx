@@ -1,0 +1,30 @@
+/*
+    Operation: RANK
+    Question: How do airlines rank by average discount rate, lowest
+    to highest?
+    Business meaning: Identifies which airlines offer the steepest
+    average discounts (ascending rank, unlike examples 1-2 which
+    ranked descending) -- useful for competitive pricing analysis.
+
+    Uses the same Average Rate calculated member from Dice #3, then
+    ranks it ascending (BASC). NonEmpty(...) is essential here: MDX
+    sorts NULLs as lower than any real value, so without it, the 6
+    airlines with zero rate data would incorrectly rank #1-6 ahead
+    of every airline with a real calculated rate.
+*/
+
+WITH
+MEMBER [Measures].[Average Rate] AS
+    [Measures].[Rate] / [Measures].[Fact Airticket Count],
+    FORMAT_STRING = "0.00"
+
+MEMBER [Measures].[Rate Rank] AS
+    Rank(
+        [Dim Airlines].[Airlines].CurrentMember,
+        ORDER( NonEmpty( [Dim Airlines].[Airlines].[All].Children, [Measures].[Average Rate] ), [Measures].[Average Rate], BASC )
+    )
+
+SELECT
+    { [Measures].[Average Rate], [Measures].[Rate Rank] } ON COLUMNS,
+    ORDER( NonEmpty( [Dim Airlines].[Airlines].[All].Children, [Measures].[Average Rate] ), [Measures].[Average Rate], BASC ) ON ROWS
+FROM [FlightAirticketCube]

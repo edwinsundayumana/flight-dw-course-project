@@ -1,0 +1,31 @@
+/*
+    Operation: RANK
+    Question: How do all airlines rank by total revenue, highest
+    to lowest?
+    Business meaning: A leaderboard -- answers "where does airline
+    X stand relative to everyone else," not just "what is airline
+    X's raw number."
+
+    Uses Rank() to assign each airline a position within a set
+    ordered by revenue (BDESC = descending). NonEmpty(...) combined
+    with .[All].Children (rather than .MEMBERS) excludes both the
+    automatic "All" aggregate member and airlines with zero
+    revenue, so the ranking only reflects real, comparable airlines.
+
+    Note: an earlier version used .MEMBERS and no NonEmpty filter,
+    which caused "All" to rank #1 (since it holds the grand total,
+    technically the largest value) and airlines with no data to
+    trail with meaningless ranks. Corrected to the version below.
+*/
+
+WITH
+MEMBER [Measures].[Revenue Rank] AS
+    Rank(
+        [Dim Airlines].[Airlines].CurrentMember,
+        ORDER( NonEmpty( [Dim Airlines].[Airlines].[All].Children, [Measures].[Price] ), [Measures].[Price], BDESC )
+    )
+
+SELECT
+    { [Measures].[Price], [Measures].[Revenue Rank] } ON COLUMNS,
+    ORDER( NonEmpty( [Dim Airlines].[Airlines].[All].Children, [Measures].[Price] ), [Measures].[Price], BDESC ) ON ROWS
+FROM [FlightAirticketCube]

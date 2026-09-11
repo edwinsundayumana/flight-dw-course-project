@@ -1,0 +1,19 @@
+/*
+    Operation: RANK
+    Question: How do departure airports rank by total flight count?
+    Business meaning: Identifies which of the 30 active airports
+    handle the most traffic -- useful for prioritizing operational
+    focus, staffing, or infrastructure investment decisions.
+*/
+
+WITH
+MEMBER [Measures].[Flight Count Rank] AS
+    Rank(
+        [Departure Airport].[Ariport].CurrentMember,
+        ORDER( [Departure Airport].[Ariport].MEMBERS, [Measures].[Fact Airticket Count], BDESC )
+    )
+
+SELECT
+    { [Measures].[Fact Airticket Count], [Measures].[Flight Count Rank] } ON COLUMNS,
+    ORDER( [Departure Airport].[Ariport].MEMBERS, [Measures].[Fact Airticket Count], BDESC ) ON ROWS
+FROM [FlightAirticketCube]

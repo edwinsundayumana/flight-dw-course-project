@@ -27,7 +27,11 @@ holding that query's exported result grid.
 | 9 | Drill Down | `drilldown_03_price_by_airline_month_2021.mdx` | Revenue by airline for 2021, drilled down to each airline's monthly breakdown. Combines the Year->Month drill with a second dimension (Airline) via cross-join. | ✅ Done |
 | 10 | Roll Up | `rollup_01_price_year_2021.mdx` | Total revenue for all of 2021, rolled up from its months into a single yearly figure. Direct mirror of Drill Down #1; verified to match it exactly. | ✅ Done |
 | 11 | Roll Up | `rollup_02_flightcount_by_airline_alltime.mdx` | Total flight count by airline across the entire dataset (no time filter). Each of the 12 real airlines rolls up to exactly 50 flights. | ✅ Done |
-| 12 | Roll Up | `rollup_03_mileage_by_cabinclass.mdx` | Total mileage by Cabin Class, rolling up 1,353 individual seats to 3 summary classes (F/C/Y). | ✅ Done |
+| 12 | Roll Up | `rollup_03_mileage_by_cabinclass.mdx` | Total mileage by Cabin Class, rolling up 1,353 seats to 3 classes. | ✅ Done |
+| 13 | Rank | `rank_01_revenue_by_airline.mdx` | Airlines ranked by total revenue, highest to lowest (12 real airlines, corrected to exclude the "All" aggregate and zero-revenue airlines). | ✅ Done |
+| 14 | Rank | `rank_02_flightcount_by_airport.mdx` | Departure airports ranked by flight count. | ✅ Done |
+| 15 | Rank | `rank_03_avgrate_by_airline_ascending.mdx` | Airlines ranked by average discount rate, lowest to highest (ascending), using `NonEmpty` to exclude airlines with no rate data. | ✅ Done |
+
 
 More rows will be added as each remaining operation (Roll Up, Rank, Moving Average, Top N) is
 completed.
@@ -65,4 +69,15 @@ completed.
   check (e.g. Roll Up #1's yearly total matches the sum of Drill Down #1's monthly figures, and
   the very first cube-connection test query from the start of Phase 5) — all three agree
   exactly, confirming the cube's hierarchy aggregates correctly in both directions.
-
+- A calculated member referencing `[Dimension].CurrentMember` (dimension-level) rather than
+  `[Dimension].[Hierarchy].CurrentMember` (hierarchy-level) caused a uniform `#Error` across
+  every row in a `Rank()` calculation. Fixed by always referencing the specific hierarchy, not
+  the dimension generically, in every part of a Rank/Order expression.
+- **MDX sorts NULL values as lower than any real value.** In an ascending (`BASC`) rank, members
+  with no data for the ranked measure will incorrectly rank first unless explicitly filtered out
+  with `NonEmpty(set, measure)` before ordering. This affects `BASC` rankings more visibly than
+  `BDESC` ones (where nulls simply trail at the bottom, less obviously wrong at a glance) — worth
+  checking both ends of any ranked result, not just the top.
+- `.MEMBERS` on a hierarchy always includes the automatic `All` aggregate member. Using
+  `.[All].Children` instead returns only the real, individual members, excluding the aggregate
+  without needing a separate `EXCEPT(...)` filter.
