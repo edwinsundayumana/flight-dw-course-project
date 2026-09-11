@@ -25,6 +25,9 @@ holding that query's exported result grid.
 | 7 | Drill Down | `drilldown_01_price_by_month_2021.mdx` | Total revenue for 2021, drilled down into its individual months. Direct summary-to-detail navigation within the Calendar hierarchy. | ✅ Done |
 | 8 | Drill Down | `drilldown_02_flightcount_by_day_march2021.mdx` | Flight count for March 2021, drilled down into individual days. Goes one level deeper (Month -> Date). | ✅ Done |
 | 9 | Drill Down | `drilldown_03_price_by_airline_month_2021.mdx` | Revenue by airline for 2021, drilled down to each airline's monthly breakdown. Combines the Year->Month drill with a second dimension (Airline) via cross-join. | ✅ Done |
+| 10 | Roll Up | `rollup_01_price_year_2021.mdx` | Total revenue for all of 2021, rolled up from its months into a single yearly figure. Direct mirror of Drill Down #1; verified to match it exactly. | ✅ Done |
+| 11 | Roll Up | `rollup_02_flightcount_by_airline_alltime.mdx` | Total flight count by airline across the entire dataset (no time filter). Each of the 12 real airlines rolls up to exactly 50 flights. | ✅ Done |
+| 12 | Roll Up | `rollup_03_mileage_by_cabinclass.mdx` | Total mileage by Cabin Class, rolling up 1,353 individual seats to 3 summary classes (F/C/Y). | ✅ Done |
 
 More rows will be added as each remaining operation (Roll Up, Rank, Moving Average, Top N) is
 completed.
@@ -58,4 +61,8 @@ completed.
   "hierarchy already appears in axis" error. Fixed by using `.Children` off a specific member
   instead (e.g. `[Calendar].[Year].&[2021].Children`), which expresses "drill into this member"
   in a single hierarchy reference rather than two conflicting ones.
+- Roll Up results were deliberately cross-checked against earlier queries as a consistency
+  check (e.g. Roll Up #1's yearly total matches the sum of Drill Down #1's monthly figures, and
+  the very first cube-connection test query from the start of Phase 5) — all three agree
+  exactly, confirming the cube's hierarchy aggregates correctly in both directions.
 

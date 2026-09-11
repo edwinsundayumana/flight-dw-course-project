@@ -1,0 +1,20 @@
+/*
+    Operation: ROLL UP
+    Question: What was total revenue for all of 2021?
+    Business meaning: The direct mirror of Drill Down #1 -- instead
+    of breaking the year into its months, this collapses all six
+    active months back up into a single yearly figure. Since SSAS
+    pre-aggregates every level of a hierarchy automatically,
+    referencing the Year member itself (rather than its Children)
+    returns the sum with no extra calculation needed.
+
+    Verification: this result (1,745,677) exactly matches both the
+    sum of all six months from Drill Down #1, and the very first
+    whole-cube total query used to confirm the cube connection at
+    the start of Phase 5 -- three independent checks agreeing.
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    [Departure Date].[Calendar].[Year].&[2021] ON ROWS
+FROM [FlightAirticketCube]

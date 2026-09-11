@@ -1,0 +1,14 @@
+/*
+    Operation: ROLL UP
+    Question: What is total mileage by Cabin Class?
+    Business meaning: A different flavor of roll-up than examples
+    1-2 -- collapses DimSeat's 1,353 individual physical seats up
+    to just their 3 broader classes (F/C/Y), a much larger
+    many-to-few aggregation, and along a completely different
+    dimension (Seat/Class) than the Time-based examples.
+*/
+
+SELECT
+    [Measures].[Mileage] ON COLUMNS,
+    [Dim Seat].[Cabin Class].MEMBERS ON ROWS
+FROM [FlightAirticketCube]

@@ -1,0 +1,19 @@
+/*
+    Operation: ROLL UP
+    Question: What is the total flight count by airline, across the
+    entire dataset (no time filter)?
+    Business meaning: Rather than rolling up within a hierarchy
+    (e.g. Month -> Year), this rolls up implicitly across all of
+    time at once simply by not filtering on it -- the "highest
+    possible roll-up" for the Airline dimension, showing each
+    airline's fully-aggregated total.
+
+    Verification: the 12 real airlines each show exactly 50 flights
+    (12 x 50 = 600), matching the perfectly balanced round-robin
+    ticket assignment built in Phase 1.
+*/
+
+SELECT
+    [Measures].[Fact Airticket Count] ON COLUMNS,
+    [Dim Airlines].[Airlines].MEMBERS ON ROWS
+FROM [FlightAirticketCube]
