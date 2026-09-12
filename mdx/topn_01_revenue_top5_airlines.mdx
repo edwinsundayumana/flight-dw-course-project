@@ -1,0 +1,21 @@
+/*
+    Operation: TOP N
+    Question: Who are the top 5 airlines by total revenue?
+    Business meaning: More directly useful than a full ranking for
+    most real reporting -- stakeholders usually want "show me the
+    winners," not a ranked list of every single airline.
+
+    TopCount(set, N, measure) sorts a set by the given measure and
+    returns only the top N in one step, simpler than building a
+    Rank() calculated member when you only need the top few.
+    .[All].Children (not .MEMBERS) keeps the "All" aggregate out of
+    contention.
+
+    Verified: matches the top 5 entries of Rank #1's full ranking
+    exactly (四川航空, 中国南方航空, 吉祥航空, 春秋航空, 海南航空).
+*/
+
+SELECT
+    [Measures].[Price] ON COLUMNS,
+    TopCount( [Dim Airlines].[Airlines].[All].Children, 5, [Measures].[Price] ) ON ROWS
+FROM [FlightAirticketCube]

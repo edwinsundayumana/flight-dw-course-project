@@ -1,0 +1,19 @@
+/*
+    Operation: TOP N
+    Question: What are the top 3 departure airports by flight
+    count?
+    Business meaning: Same technique as example 1, on a different
+    dimension, deliberately using a small N.
+
+    Notable result: all 30 active airports are tied at exactly 20
+    flights each (per Phase 1's evenly-balanced airport assignment
+    and confirmed in Rank #2), so TopCount's choice of which
+    specific 3 airports "win" the tie is arbitrary -- a genuine,
+    correct characteristic of this dataset rather than a query flaw.
+    Result: 三家子机场, 中川机场, 义乌机场 (each = 20 flights).
+*/
+
+SELECT
+    [Measures].[Fact Airticket Count] ON COLUMNS,
+    TopCount( [Departure Airport].[Ariport].[All].Children, 3, [Measures].[Fact Airticket Count] ) ON ROWS
+FROM [FlightAirticketCube]

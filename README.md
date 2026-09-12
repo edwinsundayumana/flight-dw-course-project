@@ -12,21 +12,19 @@ Server / SSAS.
 | 2 | Star schema design — formalize dimension/fact relationships and hierarchies | ✅ Complete |
 | 3 | Build the data warehouse in SQL Server (tables, load, relationships) | ✅ Complete (achieved as part of Phases 1–2) |
 | 4 | Build the OLAP cube in SSAS | ✅ Complete |
-| 5 | Write 21+ MDX queries (7+ OLAP operation types × 3 examples each) | ⬜ Not started |
-| 6 | Final report | ⬜ Not started |
+| 5 | Write 21+ MDX queries (7 OLAP operation types × 3 examples each) | ✅ Complete (21/21) |
+| 6 | Final report | ✅ Completed | request via email: edwinsunday144@gmial.com cc umanaedwin247@gmail.com
 
 
 ## Repository structure
-
 ```
 ├── queries/       SQL scripts, in run order, with their own README
 ├── csv/           Exported snapshots of tables at key milestones, with their own README
 ├── cube/          Visual Studio Analysis Services (SSAS) project, with its own README
+├── mdx/           21 MDX queries across 7 OLAP operations, with results, with their own README
 ├── screenshots/   Visual evidence (diagrams, etc.), with its own README
 └── README.md      This file
 ```
-
-More folders (e.g. `mdx/`, `report/`, `screenshots/`) will be added as later phases begin.
 
 ## Database overview
 
@@ -69,6 +67,14 @@ Engine, and the story behind why)
 Cube: `FlightAirticketCube`
 - Measures: `Mileage`, `Price`, `Rate`, `Fact Airticket Count`
 - 11 dimensions, matching the star schema's 11 foreign key relationships exactly
+
+## MDX analysis overview
+
+21 queries across 7 OLAP operations (Slice, Dice, Drill Down, Roll Up, Rank, Moving Average,
+Top N), each with a real business justification, tested MDX, and exported results. See
+`mdx/README.md` for the full list and a detailed log of MDX-specific problems encountered and
+solved along the way (naming/hierarchy pitfalls, NULL-sorting behavior, tie-breaking, etc.) —
+directly useful source material for the report's "problems and solutions" section.
 
 
 ## Environment

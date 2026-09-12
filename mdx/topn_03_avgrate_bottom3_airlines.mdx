@@ -1,0 +1,27 @@
+/*
+    Operation: TOP N (Bottom variant)
+    Question: Which 3 airlines have the smallest average discount
+    rate (i.e. give the least discount)?
+    Business meaning: Shows the technique works in either direction
+    -- BottomCount mirrors TopCount exactly, just returning the
+    lowest values instead of the highest.
+
+    NonEmpty(...) is applied first, same reasoning as Rank #3:
+    without it, airlines with no rate data (NULL) would incorrectly
+    occupy the "bottom" spots ahead of airlines with real,
+    calculated rates, since MDX treats NULL as lower than any
+    real value.
+
+    Verified: matches the bottom 3 entries of Rank #3's full
+    ascending ranking exactly (成都航空, 上海航空, 深圳航空).
+*/
+
+WITH
+MEMBER [Measures].[Average Rate] AS
+    [Measures].[Rate] / [Measures].[Fact Airticket Count],
+    FORMAT_STRING = "0.00"
+
+SELECT
+    [Measures].[Average Rate] ON COLUMNS,
+    BottomCount( NonEmpty( [Dim Airlines].[Airlines].[All].Children, [Measures].[Average Rate] ), 3, [Measures].[Average Rate] ) ON ROWS
+FROM [FlightAirticketCube]

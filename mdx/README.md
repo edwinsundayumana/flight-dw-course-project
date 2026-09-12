@@ -34,6 +34,10 @@ holding that query's exported result grid.
 | 16 | Moving Average | `movingavg_01_price_3month.mdx` | 3-month moving average of revenue across the 6 active months. Hand-verified against Drill Down #1's monthly figures. | ✅ Done |
 | 17 | Moving Average | `movingavg_02_flightcount_3month.mdx` | 3-month moving average of flight count. Reveals revenue and volume trends diverge in July, suggesting a change in average value per flight, not just activity level. | ✅ Done |
 | 18 | Moving Average | `movingavg_03_avgrate_2month.mdx` | 2-month moving average of average discount rate — a shorter, more responsive window than examples 1-2. | ✅ Done |
+| 19 | Top N | `topn_01_revenue_top5_airlines.mdx` | Top 5 airlines by total revenue. |
+| 20 | Top N | `topn_02_flightcount_top3_airports.mdx` | Top 3 departure airports by flight count (illustrates arbitrary tie-breaking, since all 30 active airports tie at 20 flights each). |
+| 21 | Top N | `topn_03_avgrate_bottom3_airlines.mdx` | Bottom 3 airlines by average discount rate, using `BottomCount`. |
+
 
 **One operation left: Top N.**
 
@@ -89,3 +93,6 @@ completed.
   April and August-December are empty). Moving average queries explicitly reference these 6
   months by name, treating them as a chronological sequence, rather than computing across all 12
   calendar months, which would let empty months silently distort real averages.
+- `TopCount`/`BottomCount` results can include arbitrary tie-breaking when many members share
+  the same value (e.g. all 30 active airports tied at 20 flights each in Top N #2) — a genuine
+  data characteristic, not a query defect, worth noting explicitly when interpreting results.
