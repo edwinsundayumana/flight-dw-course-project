@@ -13,7 +13,7 @@ Server / SSAS.
 | 3 | Build the data warehouse in SQL Server (tables, load, relationships) | ✅ Complete (achieved as part of Phases 1–2) |
 | 4 | Build the OLAP cube in SSAS | ✅ Complete |
 | 5 | Write 21+ MDX queries (7 OLAP operation types × 3 examples each) | ✅ Complete (21/21) |
-| 6 | Final report | ✅ Completed | request via email: edwinsunday144@gmial.com cc umanaedwin247@gmail.com
+| 6 | Final report | ✅ Completed request via email: edwinsunday144@gmial.com cc umanaedwin247@gmail.com|
 
 
 ## Repository structure
